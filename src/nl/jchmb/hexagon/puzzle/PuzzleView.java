@@ -11,25 +11,25 @@ import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 
-import nl.jchmb.hexagon.HexagonStructure;
 import nl.jchmb.hexagon.VectorXY;
 
-public class PuzzleView<T> extends JPanel {
+public class PuzzleView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2125616408672811286L;
 	private final int LIMIT = 320;
 	private PuzzleComputer computer;
-	private HexagonStructure<T> structure;
 	private int width = 1000, height = 800;
 	private int cellSize = 25;
 	public volatile int index = 0;
-//	public int i = 12, j = 49;
 	public int i = 8, j = 123;
 	private int toggle = 0;
 	private final int h = (int) (Math.cos((1.0d/3.0d) * Math.PI) * ((double) cellSize));
 	private final int w = (int) (Math.sin((1.0d/3.0d) * Math.PI) * ((double) cellSize));
 	
-	public PuzzleView(HexagonStructure<T> structure) {
+	public PuzzleView() {
 		setPreferredSize(new Dimension(width, height));
-		this.structure = structure;
 		computer = new PuzzleComputer(true);
 		
 		this.addMouseListener(new MouseListener() {
@@ -68,7 +68,6 @@ public class PuzzleView<T> extends JPanel {
 				y = -((originY - h) / (h * 2));
 				VectorXY v = new VectorXY(x, y);
 				
-//				System.out.println(v.x + "," + v.y);
 				Optional<PuzzlePoint> optional = PuzzleSpace.points(LIMIT).filter(z -> z.getVector().equals(v)).findAny();
 				
 				if (!optional.isPresent()) {
@@ -76,7 +75,6 @@ public class PuzzleView<T> extends JPanel {
 				}
 				
 				int index = optional.get().getIndex();
-//				System.out.println(index);
 				if (toggle == 0) {
 					i = index;
 				} else {
@@ -90,7 +88,6 @@ public class PuzzleView<T> extends JPanel {
 	}
 	
 	private void paintCell(Graphics g, VectorXY p) {
-//		g.fillOval(p.x * cellSize + width / 2, p.y * cellSize + height / 2, cellSize, cellSize);
 		double angle = 0.0d;
 		int originX = p.x * (w * 2) + width / 2;
 		int originY = -p.y * h * 2 + height / 2;
@@ -104,17 +101,11 @@ public class PuzzleView<T> extends JPanel {
 			y2 = y - ((int) (((double) cellSize) * Math.sin(angle)));
 			xx[i]= x;
 			yy[i]= y; 
-//			g.drawLine(x, y, x2, y2);
 			x = x2;
 			y = y2;
 			angle -= (1.0d/3.0d) * Math.PI;
 		}
 		g.fillPolygon(xx, yy, 6);
-		
-//		Color temp = g.getColor();
-//		g.setColor(Color.YELLOW);
-//		g.drawString("(" + p.x + "," + p.y + ")", originX - w / 4, originY + h * 2);
-//		g.setColor(temp);
 	}
 	
 	@Override
@@ -123,8 +114,6 @@ public class PuzzleView<T> extends JPanel {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, width, height);
 		g.setColor(Color.BLACK);
-//		structure.points()
-//			.forEach(p -> paintCell(g, p));
 		PuzzleSpace.points(limit)
 			.forEach(z -> paintCell(g, z.getVector()));
 		
@@ -148,13 +137,10 @@ public class PuzzleView<T> extends JPanel {
 				int originX = z.getVector().x * (w * 2) + width / 2;
 				int originY = -z.getVector().y * h * 2 + height / 2;
 				g.setColor(Color.YELLOW);
-//				g.drawString("(" + p.x + "," + p.y + ")", originX - w / 4, originY + h * 2);
 				g.drawString(Integer.toString(z.getIndex()), originX - w / 4, originY + h * 2);
 			});
 		
 		g.setColor(Color.RED);
 		g.drawString("Distance: " + list.size(), 30, 30);
-		
-//		paintCell(g, computer.compute(index));
 	}
 }

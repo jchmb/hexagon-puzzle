@@ -33,14 +33,6 @@ public class PuzzleComputer {
 	}
 	
 	private VectorXY computeWalk(int index, int r) {
-//		for (int i = 0; i <= index; i++) {
-//			Direction d;
-//			if (i < r) {
-//				d = Direction.TOP_RIGHT;
-//			} else {
-//				
-//			}
-//		}
 		return Stream.of(Direction.values())
 			.map(d -> d.offset())
 			.flatMap(
@@ -49,13 +41,6 @@ public class PuzzleComputer {
 			)
 			.sequential()
 			.limit(index)
-//			.forEach(
-//				d -> {
-//					System.out.print("(" + d.x + "," + d.y + ") ");
-//				}
-//			);
-//		System.out.println();
-//		return VectorXY.E0;
 			.reduce(VectorXY.E0, (a, b) -> a.add(b));
 	}
 	
