@@ -81,17 +81,17 @@ public class PuzzleComputer {
 	
 	public Stream<VectorXY> computePathAsStream(int i, int j) {
 		VectorXY v = computePath(i, j);
-		if (useEV && Math.signum(v.x) == Math.signum(v.y)) {
+		if (useEV && i != 0 && j != 0 && Math.signum(v.x) == Math.signum(v.y)) {
 			int l, r, y;
 			y = Math.min(Math.abs(v.x), Math.abs(v.y));
 			l = v.x - ((int) Math.signum(v.x)) * y;
 			r = v.y - ((int) Math.signum(v.y)) * y;
 			return Stream.concat(
 				Stream.concat(
-					IntStream.range(0, Math.abs(l)).mapToObj(k -> PuzzleSpace.ER.scale((int) -Math.signum(l))),
-					IntStream.range(0, Math.abs(r)).mapToObj(k -> PuzzleSpace.EL.scale((int) -Math.signum(r)))
+					IntStream.range(0, Math.abs(l)).mapToObj(k -> PuzzleSpace.ER.scale((int) -Math.signum(v.x))),
+					IntStream.range(0, Math.abs(r)).mapToObj(k -> PuzzleSpace.EL.scale((int) -Math.signum(v.x)))
 				),
-				IntStream.range(0, Math.abs(y)).mapToObj(k -> PuzzleSpace.EV.scale((int) -Math.signum(y)))
+				IntStream.range(0, Math.abs(y)).mapToObj(k -> PuzzleSpace.EV.scale((int) -Math.signum(v.x)))
 			);
 		} else {
 			return Stream.concat(

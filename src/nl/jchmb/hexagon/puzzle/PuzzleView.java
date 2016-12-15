@@ -64,11 +64,11 @@ public class PuzzleView<T> extends JPanel {
 				int y = e.getY();
 				int originX = x - width / 2;
 				int originY = y - height / 2;
-				x = (originX) / (w * 2) - w;
-				y = -((originY) / (h * 2) - h);
+				x = (originX - w) / (w * 2);
+				y = -((originY - h) / (h * 2));
 				VectorXY v = new VectorXY(x, y);
 				
-				System.out.println(v.x + "," + v.y);
+//				System.out.println(v.x + "," + v.y);
 				Optional<PuzzlePoint> optional = PuzzleSpace.points(LIMIT).filter(z -> z.getVector().equals(v)).findAny();
 				
 				if (!optional.isPresent()) {
@@ -76,7 +76,7 @@ public class PuzzleView<T> extends JPanel {
 				}
 				
 				int index = optional.get().getIndex();
-				System.out.println(index);
+//				System.out.println(index);
 				if (toggle == 0) {
 					i = index;
 				} else {
@@ -151,6 +151,9 @@ public class PuzzleView<T> extends JPanel {
 //				g.drawString("(" + p.x + "," + p.y + ")", originX - w / 4, originY + h * 2);
 				g.drawString(Integer.toString(z.getIndex()), originX - w / 4, originY + h * 2);
 			});
+		
+		g.setColor(Color.RED);
+		g.drawString("Distance: " + list.size(), 30, 30);
 		
 //		paintCell(g, computer.compute(index));
 	}
