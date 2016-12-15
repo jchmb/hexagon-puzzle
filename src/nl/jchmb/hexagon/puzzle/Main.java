@@ -11,6 +11,7 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view = new PuzzleView();
 		
+		frame.setTitle("HoneyComb Puzzle Solver");
 		frame.getContentPane().add(view);
 		frame.pack();
 		frame.setLocationRelativeTo(null);

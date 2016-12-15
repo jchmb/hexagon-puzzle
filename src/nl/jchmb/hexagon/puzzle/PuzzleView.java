@@ -24,7 +24,6 @@ public class PuzzleView extends JPanel {
 	private int cellSize = 25;
 	public volatile int index = 0;
 	public int i = 8, j = 123;
-	private int toggle = 0;
 	private final int h = (int) (Math.cos((1.0d/3.0d) * Math.PI) * ((double) cellSize));
 	private final int w = (int) (Math.sin((1.0d/3.0d) * Math.PI) * ((double) cellSize));
 	
@@ -71,16 +70,19 @@ public class PuzzleView extends JPanel {
 				Optional<PuzzlePoint> optional = PuzzleSpace.points(LIMIT).filter(z -> z.getVector().equals(v)).findAny();
 				
 				if (!optional.isPresent()) {
-					return;
+					optional = PuzzleSpace.points(LIMIT).filter(z -> z.getVector().equals(v.subtract(VectorXY.EX))).findAny();
+					
+					if (!optional.isPresent()) {
+						return;
+					}
 				}
 				
 				int index = optional.get().getIndex();
-				if (toggle == 0) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
 					i = index;
 				} else {
 					j = index;
 				}
-				toggle = (toggle + 1) % 2;
 				repaint();
 			}
 		});
@@ -137,10 +139,12 @@ public class PuzzleView extends JPanel {
 				int originX = z.getVector().x * (w * 2) + width / 2;
 				int originY = -z.getVector().y * h * 2 + height / 2;
 				g.setColor(Color.YELLOW);
-				g.drawString(Integer.toString(z.getIndex()), originX - w / 4, originY + h * 2);
+				g.drawString(Integer.toString(z.getIndex() + 1), originX - w / 4, originY + h * 2);
 			});
 		
 		g.setColor(Color.RED);
 		g.drawString("Distance: " + list.size(), 30, 30);
+		VectorXY a = computer.compute(i), b = computer.compute(j);
+		g.drawString(a.toString() + " ---> " + b.toString(), 30, 50);
 	}
 }

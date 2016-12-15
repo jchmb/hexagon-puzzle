@@ -66,7 +66,7 @@ public class PuzzleComputer {
 	
 	public Stream<VectorXY> computePathAsStream(int i, int j) {
 		VectorXY v = computePath(i, j);
-		if (useEV && i != 0 && j != 0 && Math.signum(v.x) == Math.signum(v.y)) {
+		if (useEV && v.x != 0 && v.y != 0 && Math.signum(v.x) == Math.signum(v.y)) {
 			int l, r, y;
 			y = Math.min(Math.abs(v.x), Math.abs(v.y));
 			l = v.x - ((int) Math.signum(v.x)) * y;

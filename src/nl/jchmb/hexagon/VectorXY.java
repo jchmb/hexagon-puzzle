@@ -46,4 +46,9 @@ public class VectorXY {
 		VectorXY obj = (VectorXY) other;
 		return x == obj.x && y == obj.y;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + x + "," + y + ")";
+	}
 }
